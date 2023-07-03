@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class CityCollection {
     private List<String> cityList;
     private List<String> usedCityList;
+    
     public CityCollection() {
         cityList = new ArrayList<>();
         usedCityList = new ArrayList<>();
