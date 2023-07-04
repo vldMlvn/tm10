@@ -29,7 +29,6 @@ public class EndFrame {
         Font buttonFont=new Font("Verdana", Font.BOLD | Font.ITALIC, 14);
         Font welcomeLabelFont = new Font("Verdana", Font.BOLD | Font.ITALIC, 24);
 
-
         endLabel = new JLabel("Рахунок: " + score);
         endLabel.setHorizontalAlignment(JLabel.CENTER);
         endLabel.setFont(welcomeLabelFont);
@@ -53,7 +52,6 @@ public class EndFrame {
             }
         });
         panel.add(startButton);
-
 
         menuButton = new JButton("Головне меню");
         menuButton.setFont(buttonFont);
