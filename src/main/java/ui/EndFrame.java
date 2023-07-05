@@ -12,9 +12,8 @@ public class EndFrame {
     private JPanel panel;
     private JButton startButton;
     private JButton menuButton;
-    private byte score = 100;
 
-    public void createEndFrame() {
+    public void createEndFrame(String message, int score) {
         endFrame = new JFrame("Кiнець гри");
         endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         endFrame.setSize(400, 200);
@@ -29,7 +28,7 @@ public class EndFrame {
         Font buttonFont=new Font("Verdana", Font.BOLD | Font.ITALIC, 14);
         Font welcomeLabelFont = new Font("Verdana", Font.BOLD | Font.ITALIC, 24);
 
-        endLabel = new JLabel("Рахунок: " + score);
+        endLabel = new JLabel(message + " Рахунок:" + score);
         endLabel.setHorizontalAlignment(JLabel.CENTER);
         endLabel.setFont(welcomeLabelFont);
         endFrame.setContentPane(backgroundLabel);
