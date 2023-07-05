@@ -8,7 +8,8 @@ import java.net.URL;
 
 public class EndFrame {
     private JFrame endFrame;
-    private JLabel endLabel;
+    private JLabel massageLabel;
+    private JLabel scoreLabel;
     private JPanel panel;
     private JButton startButton;
     private JButton menuButton;
@@ -16,11 +17,11 @@ public class EndFrame {
     public void createEndFrame(String message, int score) {
         endFrame = new JFrame("Кiнець гри");
         endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        endFrame.setSize(400, 200);
+        endFrame.setSize(400, 150);
         endFrame.setLocationRelativeTo(null);
         endFrame.setResizable(false);
 
-        URL imageUrl = getClass().getResource("/img/welcome_img.png");
+        URL imageUrl = getClass().getResource("/img/game_img.png");
         ImageIcon imageIcon = new ImageIcon(imageUrl);
         JLabel backgroundLabel = new JLabel(imageIcon);
         backgroundLabel.setLayout(new BorderLayout());
@@ -28,11 +29,15 @@ public class EndFrame {
         Font buttonFont=new Font("Verdana", Font.BOLD | Font.ITALIC, 14);
         Font welcomeLabelFont = new Font("Verdana", Font.BOLD | Font.ITALIC, 24);
 
-        endLabel = new JLabel(message + " Рахунок:" + score);
-        endLabel.setHorizontalAlignment(JLabel.CENTER);
-        endLabel.setFont(welcomeLabelFont);
+        massageLabel = new JLabel(message);
+        massageLabel.setHorizontalAlignment(JLabel.CENTER);
+        massageLabel.setFont(welcomeLabelFont);
+        scoreLabel=new JLabel("Рахунок: "+score);
+        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreLabel.setFont(buttonFont);
         endFrame.setContentPane(backgroundLabel);
-        endFrame.add(endLabel,BorderLayout.NORTH);
+        endFrame.add(massageLabel,BorderLayout.NORTH);
+        endFrame.add(scoreLabel,BorderLayout.CENTER);
         endFrame.setVisible(true);
 
         panel = new JPanel();

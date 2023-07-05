@@ -16,6 +16,7 @@ public class RulesFrame {
         rulesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         rulesFrame.setSize(400, 500);
         rulesFrame.setLocationRelativeTo(null);
+        rulesFrame.setResizable(false);
         rulesFrame.setLayout(new BorderLayout());
 
         title = new JLabel("Правила гри \"Cities\":");

@@ -17,6 +17,7 @@ public class GameFrame {
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setSize(400,300);
         gameFrame.setLocationRelativeTo(null);
+        gameFrame.setResizable(false);
 
         URL imageUrl = getClass().getResource("/img/game_img.png");
         ImageIcon imageIcon = new ImageIcon(imageUrl);
