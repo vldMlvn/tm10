@@ -68,7 +68,6 @@ public class StartFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startFrame.dispose();
-                new EndFrame().createEndFrame("Ти Програв",10);
             }
         });
         panel.add(exitButton);
