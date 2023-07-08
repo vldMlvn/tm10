@@ -20,6 +20,7 @@ public class StartFrame {
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startFrame.setSize(400, 300);
         startFrame.setLocationRelativeTo(null);
+        startFrame.setResizable(false);
 
         URL imageUrl = getClass().getResource("/img/welcome_img.png");
         ImageIcon imageIcon = new ImageIcon(imageUrl);
