@@ -113,7 +113,7 @@ public class GameFrame {
         buttonContainer.setLayout(new GridLayout(2, 1));
         buttonContainer.setOpaque(false);
 
-        JButton loseButton = new JButton("Я Здаюсь");
+        JButton loseButton = new JButton("Я здаюсь");
         loseButton.setFont(labelFont);
         loseButton.addActionListener(new ActionListener() {
             @Override
