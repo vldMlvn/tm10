@@ -1,4 +1,8 @@
 package ui;
+
+import citycollection.CityCollection;
+import service.MakeMove;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -53,7 +57,7 @@ public class GameFrame {
 
         JLabel score = new JLabel("Кількість ходів:");
         score.setFont(labelFont);
-        scoreField = new JTextField("      ");
+        scoreField = new JTextField("   ");
         scoreField.setFont(fieldFont);
         scoreField.setEditable(false);
         scoreField.setBackground(new Color(0,0,0,0));
@@ -65,20 +69,27 @@ public class GameFrame {
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.setOpaque(false);
 
-        JButton makeMove=new JButton("Зробити хід");
-        makeMove.setFont(labelFont);
-        makeMove.addActionListener(new ActionListener() {
+        JLabel lastCharLabel =new JLabel();
+        lastCharLabel.setFont(labelFont);
+
+        MakeMove move=new MakeMove
+                (computerAnswerField,new CityCollection(),scoreField,gameFrame,lastCharLabel);
+        JButton makeMoveButton =new JButton("Зробити хід");
+        makeMoveButton.setFont(labelFont);
+        makeMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameFrame.dispose();
+                String userCity= userInputField.getText();
+                move.madeMove(userCity);
+                userInputField.setText(""); // Очистка поля вводу Мiста
             }
         });
-        buttonPanel.add(makeMove);
+        buttonPanel.add(makeMoveButton);
 
         backgroundLabel.add(inputPanel, BorderLayout.WEST);
         backgroundLabel.add(scorePanel,BorderLayout.EAST);
         backgroundLabel.add(buttonPanel,BorderLayout.PAGE_END);
-
+        backgroundLabel.add(lastCharLabel,BorderLayout.NORTH);
 
         gameFrame.add(backgroundLabel);
         gameFrame.setVisible(true);
