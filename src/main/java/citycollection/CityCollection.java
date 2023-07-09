@@ -18,13 +18,7 @@ public class CityCollection {
     public CityCollection() {
         cityList = new HashSet<>();
         usedCityList = new ArrayList<>();
-
         loadCitiesFromFile("src/main/java/citycollection/cities.txt");
-//        cityList.add("Київ");
-//        cityList.add("Нью-Йорк");
-//        cityList.add("Вашингтон");
-
-        System.out.println(cityList.toString());
     }
 
     private void loadCitiesFromFile(String filename) {
@@ -38,7 +32,6 @@ public class CityCollection {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            // можливо добавимо виклик ErrFrame з можливiстю вибору файлу
         }
     }
     public Set<String> getCityList() {
