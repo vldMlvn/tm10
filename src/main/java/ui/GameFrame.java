@@ -1,6 +1,7 @@
 package ui;
 
 import citycollection.CityCollection;
+import service.MakeMove;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +14,13 @@ public class GameFrame {
     private JTextField userInputField;
     private JTextField computerAnswerField;
     private JTextField scoreField;
-    private int scoreCounter;
+    private int scoreCount;
     private CityCollection cityCollection;
+    private MakeMove makeMove;
 
     public GameFrame() {
         cityCollection = new CityCollection();
-        scoreCounter = 0;
+        scoreCount = 0;
     }
 
     public void createGameFrame() {
@@ -119,16 +121,20 @@ public class GameFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameFrame.dispose();
-                new EndFrame().createEndFrame("Ти здався", scoreCounter);
+                new EndFrame().createEndFrame("Ти здався", Integer.parseInt(scoreField.getText()));
             }
         });
 
+        makeMove=new MakeMove(computerAnswerField,cityCollection,scoreField,gameFrame,scoreCount);
         JButton makeMoveButton = new JButton("Зробити хід");
         makeMoveButton.setFont(labelFont);
         makeMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String userCity=userInputField.getText();
+                makeMove.madeMove(userCity);
                 setUsedCityArea(usedCityArea, cityCollection);
+                userInputField.setText("");
             }
         });
 

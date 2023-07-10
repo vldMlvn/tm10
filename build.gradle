@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'team.10'
+group = 'CodeCrafters'
 version = '1.0'
 
 repositories {
@@ -16,4 +16,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'AppLauncher'
+    }
+    from configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
 }
