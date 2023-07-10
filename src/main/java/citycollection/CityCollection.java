@@ -1,11 +1,9 @@
 package citycollection;
 
-import ui.EndFrame;
-import ui.StartFrame;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,11 +16,12 @@ public class CityCollection {
     public CityCollection() {
         cityList = new HashSet<>();
         usedCityList = new ArrayList<>();
-        loadCitiesFromFile("src/main/java/citycollection/cities.txt");
+        loadCitiesFromFile("/citylist/cities.txt");
     }
 
     private void loadCitiesFromFile(String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (InputStream inputStream = getClass().getResourceAsStream(filename);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] cities = line.split("\\s+");
@@ -34,6 +33,7 @@ public class CityCollection {
             e.printStackTrace();
         }
     }
+
     public Set<String> getCityList() {
         return cityList;
     }
