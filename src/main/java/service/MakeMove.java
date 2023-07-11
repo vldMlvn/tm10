@@ -44,11 +44,12 @@ public class MakeMove {
             } else {
                 String computerCity = moveHelper.getComputerAnswer(availableCity);
                 computerAnswerField.setText(computerCity);
-                cityCollection.markCityUsed(computerCity);
+                //cityCollection.markCityUsed(computerCity);
             }
             scoreCount++;
             scoreField.setText(String.valueOf(scoreCount));
             cityCollection.markCityUsed(userCity);
+            cityCollection.markCityUsed(computerAnswerField.getText());
         }
     }
 }
