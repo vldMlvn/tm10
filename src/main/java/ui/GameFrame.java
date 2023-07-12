@@ -119,11 +119,17 @@ public class GameFrame {
         loseButton.setFont(labelFont);
         loseButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                gameFrame.dispose();
-                new EndFrame().createEndFrame("Ти здався", Integer.parseInt(scoreField.getText()));
-            }
-        });
+             public void actionPerformed(ActionEvent e) {
+        try {
+            int score = Integer.parseInt(scoreField.getText());
+            gameFrame.dispose();
+            new EndFrame().createEndFrame("Ти здався", score);
+        } catch (NumberFormatException ex) {
+            gameFrame.dispose();
+            new EndFrame().createEndFrame("Ти здався", 0);
+        }
+    }
+});
 
         makeMove=new MakeMove(computerAnswerField,cityCollection,scoreField,gameFrame,scoreCount);
         JButton makeMoveButton = new JButton("Зробити хід");
