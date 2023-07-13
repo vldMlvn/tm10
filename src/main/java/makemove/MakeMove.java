@@ -70,7 +70,14 @@ public class MakeMove {
             lastLetter = Character.toUpperCase(userCity.charAt(userCity.length() - 1));
         }
         if (computerAnswer != null && !computerAnswer.isEmpty()) {
-            if (firstLetter != Character.toLowerCase(computerAnswer.charAt(computerAnswer.length() - 1))) {
+            char computeLastLetter;
+            char lowerCaseComputerLastLetter = Character.toLowerCase(computerAnswer.charAt(computerAnswer.length() - 1));
+            if(lowerCaseComputerLastLetter =='ь'){
+                computeLastLetter=Character.toLowerCase(computerAnswer.charAt(computerAnswer.length() - 2));
+            }else {
+                computeLastLetter= lowerCaseComputerLastLetter;
+            }
+            if (firstLetter != computeLastLetter) {
                 String message = "Місто має починатись на літеру, на яку закінчується відповідь комп`ютера";
                 JOptionPane.showMessageDialog(null, message);
             } else {
