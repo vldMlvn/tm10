@@ -1,99 +1,101 @@
 package makemove;
-
 import citycollection.CityCollection;
+import ui.EndFrame;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MakeMove {
     private JTextField computerAnswerField;
-    private CityCollection cityCollection;
     private JTextField scoreField;
-    private int scoreCounter = 0;
+    private CityCollection cityCollection;
+    private JFrame gameFrame;
+    private int scoreCount;
 
-    public MakeMove(JTextField computerAnswerField, CityCollection cityCollection, JTextField scoreField) {
+    public MakeMove(JTextField computerAnswerField, CityCollection cityCollection,
+                    JTextField scoreField, int scoreCount, JFrame gameFrame) {
         this.computerAnswerField = computerAnswerField;
         this.cityCollection = cityCollection;
         this.scoreField = scoreField;
+        this.scoreCount = scoreCount;
+        this.gameFrame=gameFrame;
     }
 
-    public void move(String inputtedText) {
-        String userCity = inputtedText.trim().toLowerCase();
-        if (isInputValid(userCity)) {
-            for (String city : cityCollection.getCityList()) {
-                if (userCity.equals(city.toLowerCase())) {
+    public void move(String userCity) {
+        if (!isInputValid(userCity)) {
+            String message = "Введіть назву міста";
+            JOptionPane.showMessageDialog(null, message);
+            return;
+        }
+
+        for (String city : cityCollection.getCityList()) {
+            if (userCity.equals(city)) {
+                if (checkCityFromCollection(userCity)) {
                     madeMove(userCity);
+                } else {
+                    String message = "Таке місто вже було використано";
+                    JOptionPane.showMessageDialog(null, message);
                 }
-            }
-        } else {
-            String message = "Введіть назву міста. В назві міста мають бути тількі літери";
-            // вивести окно с помилкою та повернути гравця до вводу міста знов
-        }
-    }
-
-    private boolean isInputValid(String userCity){
-        if (userCity.isEmpty()) return false;
-        if (userCity.contains(" ")) return false;
-        if (!userCity.matches("^[\\\\p{IsCyrillic}]+$")) return false;
-
-        return true;
-    }
-
-    private void madeMove(String userCity){
-        if (userCity.equals("здаюсь")) {
-            String message = "You Lose";
-            //закрываем игру
-        }
-        String computerAnswer = computerAnswerField.toString();
-        char firstLetter;
-        char lastLetter;
-        firstLetter = userCity.charAt(0);
-        lastLetter = userCity.charAt(userCity.length()-1);
-
-        if (computerAnswer != null) {
-            if (firstLetter != computerAnswer.charAt(computerAnswer.length()-1)) {
-                String message = "Перша буква назви міста повинна дорівнювати останній букві міста соперника";
-                // вивести окно с помилкою та повернути гравця до вводу міста знов
-            }
-            else {
-                checkCityFromCollection(userCity);
-                scoreCounter++;
-                computerMove(lastLetter);
+                return;
             }
         }
+
+        String message = "Місто не знайдено";
+        JOptionPane.showMessageDialog(null, message);
     }
 
-    private void checkCityFromCollection(String userCity) {
+    private boolean isInputValid(String userCity) {
+        return !userCity.isEmpty() && !userCity.contains(" ");
+    }
+
+    private boolean checkCityFromCollection(String userCity) {
         for (String city : cityCollection.getUsedCityList()) {
-            if (userCity.equals(city.toLowerCase())) {
-                String message = "Таке місто вже було використано в цей грі";
-                // вивести окно с помилкою та повернути гравця до вводу міста знов
+            if (userCity.equals(city)) {
+                return false;
             }
         }
         cityCollection.markCityUsed(userCity);
+        return true;
+    }
+
+    private void madeMove(String userCity) {
+        String computerAnswer = computerAnswerField.getText();
+        char firstLetter = Character.toLowerCase(userCity.charAt(0));
+        char lastLetter = Character.toUpperCase(userCity.charAt(userCity.length() - 1));
+
+        if (computerAnswer != null && !computerAnswer.isEmpty()) {
+            if (firstLetter != Character.toLowerCase(computerAnswer.charAt(computerAnswer.length() - 1))) {
+                String message = "Місто вже було використане";
+                JOptionPane.showMessageDialog(null, message);
+            } else {
+                scoreCount++;
+                scoreField.setText(String.valueOf(scoreCount));
+                computerMove(lastLetter);
+            }
+        } else {
+            scoreCount++;
+            scoreField.setText(String.valueOf(scoreCount));
+            computerMove(lastLetter);
+        }
     }
 
     private void computerMove(char lastLetter) {
-        ArrayList<String> fitCity = new ArrayList();
-        boolean isFitCityNotUsed = true;
+        List<String> availableCities = new ArrayList<>();
         for (String city : cityCollection.getCityList()) {
-            if (lastLetter == city.toLowerCase().charAt(0)) {
-                for (String usedcity : cityCollection.getUsedCityList()) {
-                    if (city.equals(usedcity.toLowerCase())) {
-                        isFitCityNotUsed = false;
-                    }
-                }
-                if (isFitCityNotUsed) fitCity.add(city);
+            if (!cityCollection.getUsedCityList().contains(city) &&
+                    city.startsWith(String.valueOf(lastLetter))) {
+                availableCities.add(city);
             }
         }
-        if (!fitCity.isEmpty()) {
-            String message = "Компьютер зробив хід. Тепер твоя черга";
-//          записати у поле computerAnswerField значення fitCity.get(0)
-            scoreCounter++;
-            cityCollection.markCityUsed(fitCity.get(0));
-            // перейти до форми вводу міста гравцем
+        if (availableCities.isEmpty()) {
+            gameFrame.dispose();
+            new EndFrame().createEndFrame("Ти переміг", scoreCount);
         } else {
-            String message = "У компьютера більше не має ходу. Комп'ютер програв.";
+            String computerCity = availableCities.get(new Random().nextInt(availableCities.size()));
+            computerAnswerField.setText(computerCity);
+            cityCollection.markCityUsed(computerCity);
         }
     }
 }

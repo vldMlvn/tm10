@@ -1,7 +1,8 @@
 package ui;
 
 import citycollection.CityCollection;
-import service.MakeMove;
+import makemove.MakeMove;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -131,14 +132,14 @@ public class GameFrame {
     }
 });
 
-        makeMove=new MakeMove(computerAnswerField,cityCollection,scoreField,gameFrame,scoreCount);
+        makeMove=new MakeMove(computerAnswerField,cityCollection,scoreField,scoreCount,gameFrame);
         JButton makeMoveButton = new JButton("Зробити хід");
         makeMoveButton.setFont(labelFont);
         makeMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String userCity=userInputField.getText();
-                makeMove.madeMove(userCity);
+                makeMove.move(userCity);
                 setUsedCityArea(usedCityArea, cityCollection);
                 userInputField.setText("");
             }
