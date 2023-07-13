@@ -57,27 +57,32 @@ public class MakeMove {
                 return false;
             }
         }
-        cityCollection.markCityUsed(userCity);
         return true;
     }
 
     private void madeMove(String userCity) {
         String computerAnswer = computerAnswerField.getText();
         char firstLetter = Character.toLowerCase(userCity.charAt(0));
-        char lastLetter = Character.toUpperCase(userCity.charAt(userCity.length() - 1));
-
+        char lastLetter;
+        if(userCity.toUpperCase().charAt(userCity.length()-1)=='Ь'){
+            lastLetter=userCity.toUpperCase().charAt(userCity.length()-2);
+        }else {
+            lastLetter = Character.toUpperCase(userCity.charAt(userCity.length() - 1));
+        }
         if (computerAnswer != null && !computerAnswer.isEmpty()) {
             if (firstLetter != Character.toLowerCase(computerAnswer.charAt(computerAnswer.length() - 1))) {
-                String message = "Місто вже було використане";
+                String message = "Місто має починатись на літеру, на яку закінчується відповідь комп`ютера";
                 JOptionPane.showMessageDialog(null, message);
             } else {
                 scoreCount++;
                 scoreField.setText(String.valueOf(scoreCount));
+                cityCollection.markCityUsed(userCity);
                 computerMove(lastLetter);
             }
         } else {
             scoreCount++;
             scoreField.setText(String.valueOf(scoreCount));
+            cityCollection.markCityUsed(userCity);
             computerMove(lastLetter);
         }
     }
