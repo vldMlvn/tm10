@@ -14,7 +14,7 @@ public class RulesFrame {
 
         rulesFrame = new JFrame("Правила гри");
         rulesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        rulesFrame.setSize(400, 500);
+        rulesFrame.setSize(400, 420);
         rulesFrame.setLocationRelativeTo(null);
         rulesFrame.setResizable(false);
         rulesFrame.setLayout(new BorderLayout());
@@ -29,11 +29,11 @@ public class RulesFrame {
         rules.append("\n☞ Гравець і комп`ютер по черзі називають\n назви міст;\n");
         rules.append("\n☞ Назва міста повинна починатись на ту літеру,\n на яку закінчується попереднє місто;\n");
         rules.append("\n☞ Назви міст не повинні повторюватись;\n");
-        rules.append("\n☞ Назви міст повинні бути написані з великої літери;\n");
-        rules.append("\n☞ Якщо гравець не може назвати місто,\n він- програв і повинен написати \"Здаюсь\";\n");
+        rules.append("\n☞ Назви міст повинні починатися з великої літери;\n");
         rules.append("\n☞ Гра триває до тих пір, поки гравець не здасться \nабо коп`ютер не зможе назвати місто.\n");
         rules.append("\n\nВеселої гри :)");
         Font rulesFont = new Font("Verdana", Font.ITALIC, 14);
+        rules.setEditable(false);
         rules.setFont(rulesFont);
 
         backToMenuButton = new JButton("Повернутися до головного меню");
