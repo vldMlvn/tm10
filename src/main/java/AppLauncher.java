@@ -1,6 +1,6 @@
 import ui.StartFrame;
 
-public class App {
+public class AppLauncher {
     public static void main(String[] args) {
         new StartFrame().createStartFrame();
     }

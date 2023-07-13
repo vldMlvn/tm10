@@ -1,4 +1,8 @@
 package ui;
+
+import citycollection.CityCollection;
+import service.MakeMove;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,12 +14,19 @@ public class GameFrame {
     private JTextField userInputField;
     private JTextField computerAnswerField;
     private JTextField scoreField;
+    private int scoreCount;
+    private CityCollection cityCollection;
+    private MakeMove makeMove;
 
-    public void createGameFrame(){
+    public GameFrame() {
+        cityCollection = new CityCollection();
+        scoreCount = 0;
+    }
 
-        gameFrame=new JFrame("Cities");
+    public void createGameFrame() {
+        gameFrame = new JFrame("Cities");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setSize(400,300);
+        gameFrame.setSize(400, 300);
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setResizable(false);
 
@@ -25,7 +36,7 @@ public class GameFrame {
         backgroundLabel.setLayout(new BorderLayout());
 
         Font labelFont = new Font("Verdana", Font.BOLD | Font.ITALIC, 14);
-        Font fieldFont = new Font("Verdana",  Font.ITALIC, 14);
+        Font fieldFont = new Font("Verdana", Font.ITALIC, 14);
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(6, 2));
@@ -48,39 +59,110 @@ public class GameFrame {
         inputPanel.add(computerAnswerField);
 
         JPanel scorePanel = new JPanel();
-        scorePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        scorePanel.setLayout(new BorderLayout());
         scorePanel.setOpaque(false);
 
         JLabel score = new JLabel("Кількість ходів:");
         score.setFont(labelFont);
-        scoreField = new JTextField("      ");
+        scoreField = new JTextField("    ");
         scoreField.setFont(fieldFont);
         scoreField.setEditable(false);
-        scoreField.setBackground(new Color(0,0,0,0));
+        scoreField.setBackground(new Color(0, 0, 0, 0));
 
-        scorePanel.add(score);
-        scorePanel.add(scoreField);
+        JTextArea usedCityArea = new JTextArea();
+        usedCityArea.setFont(new Font("Verdana", Font.ITALIC, 12));
+        usedCityArea.setLineWrap(true);
+        usedCityArea.setWrapStyleWord(true);
+        usedCityArea.setOpaque(false);
+        usedCityArea.setBackground(new Color(0, 0, 0, 0));
 
-        JPanel buttonPanel=new JPanel();
+        JScrollPane usedCityScrollPane = new JScrollPane(usedCityArea);
+        usedCityScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        usedCityScrollPane.setPreferredSize(new Dimension(200, 150));
+        usedCityScrollPane.setOpaque(false);
+        usedCityScrollPane.getViewport().setOpaque(false);
+
+        JLabel usedCityLabel = new JLabel("Використані міста:");
+        usedCityLabel.setFont(labelFont);
+
+        scorePanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.weighty = 1.0;
+
+        scorePanel.add(score, gbc);
+
+        gbc.gridx = 1;
+        scorePanel.add(scoreField, gbc);
+
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = 2;
+        gbc.weighty = 0.0;
+        scorePanel.add(usedCityLabel, gbc);
+
+        gbc.gridy = 2;
+        scorePanel.add(usedCityScrollPane, gbc);
+
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.setOpaque(false);
 
-        JButton makeMove=new JButton("Зробити хід");
-        makeMove.setFont(labelFont);
-        makeMove.addActionListener(new ActionListener() {
+        JPanel buttonContainer = new JPanel();
+        buttonContainer.setLayout(new GridLayout(2, 1));
+        buttonContainer.setOpaque(false);
+
+        JButton loseButton = new JButton("Я здаюсь");
+        loseButton.setFont(labelFont);
+        loseButton.addActionListener(new ActionListener() {
+            @Override
+             public void actionPerformed(ActionEvent e) {
+        try {
+            int score = Integer.parseInt(scoreField.getText());
+            gameFrame.dispose();
+            new EndFrame().createEndFrame("Ти здався", score);
+        } catch (NumberFormatException ex) {
+            gameFrame.dispose();
+            new EndFrame().createEndFrame("Ти здався", 0);
+        }
+    }
+});
+
+        makeMove=new MakeMove(computerAnswerField,cityCollection,scoreField,gameFrame,scoreCount);
+        JButton makeMoveButton = new JButton("Зробити хід");
+        makeMoveButton.setFont(labelFont);
+        makeMoveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameFrame.dispose();
+                String userCity=userInputField.getText();
+                makeMove.madeMove(userCity);
+                setUsedCityArea(usedCityArea, cityCollection);
+                userInputField.setText("");
             }
         });
-        buttonPanel.add(makeMove);
+
+        buttonContainer.add(makeMoveButton);
+        buttonContainer.add(loseButton);
+
+        buttonPanel.add(buttonContainer, BorderLayout.PAGE_END);
 
         backgroundLabel.add(inputPanel, BorderLayout.WEST);
-        backgroundLabel.add(scorePanel,BorderLayout.EAST);
-        backgroundLabel.add(buttonPanel,BorderLayout.PAGE_END);
-
+        backgroundLabel.add(scorePanel, BorderLayout.EAST);
+        backgroundLabel.add(buttonPanel, BorderLayout.SOUTH);
 
         gameFrame.add(backgroundLabel);
         gameFrame.setVisible(true);
+    }
+
+    private void setUsedCityArea(JTextArea usedCityArea, CityCollection cityCollection) {
+        usedCityArea.setText(" ");
+        for (String city : cityCollection.getUsedCityList()) {
+            if (!cityCollection.getUsedCityList().isEmpty()) {
+                usedCityArea.append(city + ", ");
+            }
+        }
     }
 }
